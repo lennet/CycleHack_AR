@@ -44,6 +44,7 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         mapView.delegate = self
         mapView.alpha = 0.75
         mapView.showsUserLocation = true
+        mapView.setCenter(mapView.userLocation.coordinate, animated: true)
         view.addSubview(mapView)
         
         displayPointFeatures()
