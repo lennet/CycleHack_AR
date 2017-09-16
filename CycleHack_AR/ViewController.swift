@@ -94,17 +94,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
     }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // add pin to current position on touch
-        if let _ = touches.first{
-            let image = UIImage(named: "pinBlue")!
-            let annotationNode = LocationAnnotationNode(location: nil, image: image)
-            annotationNode.scaleRelativeToDistance = true
-            sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
-        }
-    }
     
     func displayPointFeatures() {
         let pointFeatures = PointFeatureCollection()
