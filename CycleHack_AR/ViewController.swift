@@ -41,6 +41,8 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mapBlurOverlay: UIVisualEffectView!
+    @IBOutlet weak var panIndicatorView: PanIndicatorView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,11 +62,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         pinLocationNode.scaleRelativeToDistance = true
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
         
-        mapView.delegate = self
-        mapView.alpha = 0.75
-        mapView.showsUserLocation = true
-        mapView.setCenter(mapView.userLocation.coordinate, animated: true)
-        mapView.showsUserLocation = true
         mapView.setRegion(.berlin, animated: false)
 
         view.addSubview(mapView)
@@ -206,8 +203,10 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
              .cancelled,
              .failed:
             mapBlurOverlay.isHidden = true
+            panIndicatorView.touchesEnded([], with: nil)
         default:
             mapBlurOverlay.isHidden = false
+            panIndicatorView.touchesBegan([], with: nil)
         }
         
         mapContainerHeightConstraint.constant = newHeight
