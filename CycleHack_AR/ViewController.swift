@@ -30,10 +30,13 @@ extension LocationAnnotationNode {
 
 
 class ViewController: UIViewController,
-MKMapViewDelegate, SceneLocationViewDelegate {
+MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
     let sceneLocationView = SceneLocationView()
+    var numberOfPointsOfInterest = 0
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
@@ -45,7 +48,7 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         super.viewDidLoad()
         configureSceneView()
         configureMapView()
-        displayPointFeatures()
+        configureLocationManager()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +77,13 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         sceneLocationView.locationDelegate = self
         view.insertSubview(sceneLocationView, at: 0)
     }
+    
+    func configureLocationManager() {
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.distanceFilter = 100.0
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -88,10 +98,27 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     
     func displayPointFeatures() {
         let pointFeatures = PointFeatureCollection()
-        pointFeatures.features.forEach(display)
+        
+        pointFeatures
+            .features
+            .filter(inDesiredArea)
+            .forEach(display)
+    }
+    
+    func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
+        return isInArea(distanceLimit: 500.0, coordinate: streetFeature.location)
+    }
+
+    
+    public func isInArea(distanceLimit: Double, coordinate: CLLocation) -> Bool {
+        guard let distance = userDistance(from: coordinate) else {
+            return false
+        }
+        return distance <= distanceLimit
     }
     
     func display(streetFeature: GeoFeature<Point, [Double]>) {
+        numberOfPointsOfInterest += 1
         let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
         locationAnnotationNode.scaleRelativeToDistance = true
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
@@ -100,6 +127,22 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         mapAnnotation.coordinate = streetFeature.coordinate
         mapAnnotation.subtitle = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
         mapView.addAnnotation(mapAnnotation)
+    }
+    
+    // get distance from point to current location
+    private func userDistance(from point: CLLocation) -> Double? {
+        guard let userLocation = currentLocation else {
+            print("Error - User location unknown!")
+            return nil
+        }
+        return userLocation.distance(from: point)
+    }
+    
+    func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+        
+        currentLocation = locations.last
+        displayPointFeatures()
+        
     }
     
     // MARK: MapViewDelegate
@@ -117,26 +160,21 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     // MARK: SceneLocatioNViewDelegate
     
     func sceneLocationViewDidAddSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-//        print("SceneLocationViewDidAddSceneLocationEstimae")
     }
     
     func sceneLocationViewDidRemoveSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-//        print("sceneLocationViewDidRemoveSceneLocationEstimate")
 
     }
     
     func sceneLocationViewDidConfirmLocationOfNode(sceneLocationView: SceneLocationView, node: LocationNode) {
-//        print("sceneLocationViewDidConfirmLocationOfNode")
 
     }
     
     func sceneLocationViewDidSetupSceneNode(sceneLocationView: SceneLocationView, sceneNode: SCNNode) {
-//        print("sceneLocationViewDidSetupSceneNode")
 
     }
     
     func sceneLocationViewDidUpdateLocationAndScaleOfLocationNode(sceneLocationView: SceneLocationView, locationNode: LocationNode) {
-//        print("sceneLocationViewDidUpdateLocationAndScaleOfLocationNode")
 
     }
 
