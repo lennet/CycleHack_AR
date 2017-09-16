@@ -10,6 +10,13 @@ import UIKit
 import ARCL
 import MapKit
 import SceneKit
+import SceneKit.ModelIO
+import ModelIO
+
+enum CollisionCategory: Int {
+    case ground
+    case bicycle
+}
 
 extension MKCoordinateRegion {
     
@@ -52,7 +59,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mapBlurOverlay: UIVisualEffectView!
     @IBOutlet weak var panIndicatorView: PanIndicatorView!
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,11 +70,13 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        becomeFirstResponder()
         mapContainerHeightConstraint.constant = view.frame.height/2
         sceneLocationView.run()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        resignFirstResponder()
         super.viewWillDisappear(animated)
         
         sceneLocationView.pause()
@@ -94,7 +103,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         // add pin to current position on touch
@@ -118,7 +127,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
         return isInArea(distanceLimit: 500.0, coordinate: streetFeature.location)
     }
-
+    
     
     public func isInArea(distanceLimit: Double, coordinate: CLLocation) -> Bool {
         guard let distance = userDistance(from: coordinate) else {
@@ -132,6 +141,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationNode.continuallyUpdatePositionAndScale = true
         currentNodes.insert(locationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
+        
         
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
@@ -152,7 +162,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         currentLocation = locations.last
         currentNodes.removeAll()
         displayPointFeatures()
-        
     }
     
     // MARK: MapViewDelegate
@@ -162,10 +171,10 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     @objc func updateLocation() {
-//        print("updateLocation called")
-//        print("Current number of locationNodes:  \(self.sceneLocationView)")
+        //        print("updateLocation called")
+        //        print("Current number of locationNodes:  \(self.sceneLocationView)")
     }
-
+    
     
     // MARK: SceneLocatioNViewDelegate
     
@@ -173,21 +182,21 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func sceneLocationViewDidRemoveSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-
+        
     }
     
     func sceneLocationViewDidConfirmLocationOfNode(sceneLocationView: SceneLocationView, node: LocationNode) {
-
+        
     }
     
     func sceneLocationViewDidSetupSceneNode(sceneLocationView: SceneLocationView, sceneNode: SCNNode) {
-
+        
     }
     
     func sceneLocationViewDidUpdateLocationAndScaleOfLocationNode(sceneLocationView: SceneLocationView, locationNode: LocationNode) {
-
+        
     }
-
+    
     @IBAction func handleMapContainerPan(_ sender: UIPanGestureRecognizer) {
         guard let containerView = sender.view else { return }
         let translation = sender.translation(in: containerView)
@@ -213,6 +222,29 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         mapContainerHeightConstraint.constant = newHeight
     }
     
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        guard motion == .motionShake else { return }
+        guard let position = sceneLocationView.currentScenePosition() else { return }
+        let insertionYOffset: Float = 0.5
+        let scene = SCNScene(named: "bicycle.scn")
+        if let node = scene?.rootNode.childNodes.first {
+            
+        node.position = SCNVector3Make(
+            position.x - 100,
+            position.y + insertionYOffset,
+            position.z - 100
+            )
+
+        for _ in 0...100 {
+            let when = DispatchTime.now() + 0.1
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.sceneLocationView.add(node: node)
+                }
+            }
+
+        }
+        
+    }
     
 }
 
