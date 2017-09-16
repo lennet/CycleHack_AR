@@ -28,13 +28,17 @@ extension LocationAnnotationNode {
     
 }
 
+
 class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate {
     
     
     let sceneLocationView = SceneLocationView()
-    let mapView = MKMapView()
 
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mapBlurOverlay: UIVisualEffectView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneLocationView.showAxesNode = true
@@ -47,22 +51,17 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         let pinLocationNode = LocationAnnotationNode(location: pinLocation, image: pinImage)
         pinLocationNode.scaleRelativeToDistance = true
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
-            
-        view.addSubview(sceneLocationView)
         
-        mapView.delegate = self
-        mapView.alpha = 0.75
+        view.insertSubview(sceneLocationView, at: 0)
+        
         mapView.showsUserLocation = true
         mapView.setRegion(.berlin, animated: false)
-        view.addSubview(mapView)
-
-        
         displayPointFeatures()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        mapContainerHeightConstraint.constant = view.frame.height/2
         sceneLocationView.run()
     }
     
@@ -108,7 +107,7 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
-        mapAnnotation.title = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
+        mapAnnotation.subtitle = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
         mapView.addAnnotation(mapAnnotation)
     }
     
@@ -119,37 +118,60 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     }
     
     @objc func updateLocation() {
-        print("updateLocation called")
-        print("Current number of locationNodes:  \(self.sceneLocationView)")
+//        print("updateLocation called")
+//        print("Current number of locationNodes:  \(self.sceneLocationView)")
     }
 
     
     // MARK: SceneLocatioNViewDelegate
     
     func sceneLocationViewDidAddSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-        print("SceneLocationViewDidAddSceneLocationEstimae")
+//        print("SceneLocationViewDidAddSceneLocationEstimae")
     }
     
     func sceneLocationViewDidRemoveSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-        print("sceneLocationViewDidRemoveSceneLocationEstimate")
+//        print("sceneLocationViewDidRemoveSceneLocationEstimate")
 
     }
     
     func sceneLocationViewDidConfirmLocationOfNode(sceneLocationView: SceneLocationView, node: LocationNode) {
-        print("sceneLocationViewDidConfirmLocationOfNode")
+//        print("sceneLocationViewDidConfirmLocationOfNode")
 
     }
     
     func sceneLocationViewDidSetupSceneNode(sceneLocationView: SceneLocationView, sceneNode: SCNNode) {
-        print("sceneLocationViewDidSetupSceneNode")
+//        print("sceneLocationViewDidSetupSceneNode")
 
     }
     
     func sceneLocationViewDidUpdateLocationAndScaleOfLocationNode(sceneLocationView: SceneLocationView, locationNode: LocationNode) {
-        print("sceneLocationViewDidUpdateLocationAndScaleOfLocationNode")
+//        print("sceneLocationViewDidUpdateLocationAndScaleOfLocationNode")
 
     }
 
-
+    @IBAction func handleMapContainerPan(_ sender: UIPanGestureRecognizer) {
+        guard let containerView = sender.view else { return }
+        let translation = sender.translation(in: containerView)
+        sender.setTranslation(.zero, in: containerView)
+        
+        let panIndicatorHeight = containerView.frame.height - mapContainerHeightConstraint.constant
+        
+        var newHeight = mapContainerHeightConstraint.constant - translation.y
+        newHeight = max(newHeight, panIndicatorHeight)
+        newHeight = min(newHeight, view.frame.height/0.8)
+        
+        switch sender.state {
+        case .ended,
+             .cancelled,
+             .failed:
+            mapBlurOverlay.isHidden = true
+        default:
+            mapBlurOverlay.isHidden = false
+        }
+        
+        mapContainerHeightConstraint.constant = newHeight
+    }
+    
+    
 }
 
