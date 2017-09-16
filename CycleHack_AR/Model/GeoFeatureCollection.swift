@@ -10,7 +10,7 @@ import Foundation
 
 struct StreetFeatureCollection: Codable {
     var type: String
-    var features: [GeoFeature<Street, [[[Float]]]>]
+    var features: [GeoFeature<Street, [[[Double]]]>]
 }
 
 extension StreetFeatureCollection {
@@ -25,7 +25,7 @@ extension StreetFeatureCollection {
 
 struct PointFeatureCollection: Codable {
     var type: String
-    var features: [GeoFeature<Point, [Float]>]
+    var features: [GeoFeature<Point, [Double]>]
 }
 
 extension PointFeatureCollection {

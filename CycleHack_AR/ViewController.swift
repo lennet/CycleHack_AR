@@ -11,6 +11,15 @@ import ARCL
 import MapKit
 import SceneKit
 
+extension LocationAnnotationNode {
+    
+    convenience init(streetFeature: GeoFeature<Point, [Double]>) {
+        let pinImage = UIImage(named: "pin")!
+        self.init(location: streetFeature.location, image: pinImage)
+    }
+    
+}
+
 class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate {
     
@@ -37,6 +46,9 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         mapView.alpha = 0.75
         mapView.showsUserLocation = true
         view.addSubview(mapView)
+
+        
+        displayPointFeatures()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,6 +85,22 @@ MKMapViewDelegate, SceneLocationViewDelegate {
             annotationNode.scaleRelativeToDistance = true
             sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
         }
+    }
+    
+    func displayPointFeatures() {
+        let pointFeatures = PointFeatureCollection()
+        pointFeatures.features.forEach(display)
+    }
+    
+    func display(streetFeature: GeoFeature<Point, [Double]>) {
+        let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
+        
+        let mapAnnotation = MKPointAnnotation()
+        mapAnnotation.coordinate = streetFeature.coordinate
+        mapAnnotation.title = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
+        mapView.addAnnotation(mapAnnotation)
+        
+        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
     }
     
     // MARK: MapViewDelegate
