@@ -11,6 +11,15 @@ import ARCL
 import MapKit
 import SceneKit
 
+extension LocationAnnotationNode {
+    
+    convenience init(streetFeature: GeoFeature<Point, [Float]>) {
+        let pinImage = UIImage(named: "pin")!
+        self.init(location: streetFeature.location, image: pinImage)
+    }
+    
+}
+
 class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate {
     
