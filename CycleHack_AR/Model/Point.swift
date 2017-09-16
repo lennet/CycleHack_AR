@@ -12,5 +12,5 @@ struct Point: Codable {
     var name: String
     var year: Int
     var count: Int
-    var directorate: Int
+    var directorate: String
 }

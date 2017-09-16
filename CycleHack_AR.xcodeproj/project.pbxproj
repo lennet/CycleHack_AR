@@ -14,6 +14,11 @@
 		986E82661F6D2FD1002F66B7 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82651F6D2FD1002F66B7 /* Geometry.swift */; };
 		986E826B1F6D31EE002F66B7 /* points.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 986E826A1F6D31E6002F66B7 /* points.geojson */; };
 		986E826C1F6D31EE002F66B7 /* streets.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 986E82691F6D31E6002F66B7 /* streets.geojson */; };
+		986E826E1F6D3311002F66B7 /* PointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E826D1F6D3311002F66B7 /* PointTests.swift */; };
+		986E82701F6D3A49002F66B7 /* StreetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E826F1F6D3A49002F66B7 /* StreetTests.swift */; };
+		986E82721F6D3BC6002F66B7 /* GeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82711F6D3BC6002F66B7 /* GeometryTests.swift */; };
+		986E82741F6D3E15002F66B7 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82731F6D3E15002F66B7 /* Extensions.swift */; };
+		986E82761F6D3E5F002F66B7 /* GeoFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82751F6D3E5F002F66B7 /* GeoFeatureTests.swift */; };
 		98F098861F6D281C00765F6B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F098851F6D281C00765F6B /* AppDelegate.swift */; };
 		98F098881F6D281C00765F6B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F098871F6D281C00765F6B /* ViewController.swift */; };
 		98F0988B1F6D281C00765F6B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98F098891F6D281C00765F6B /* Main.storyboard */; };
@@ -43,6 +48,11 @@
 		986E82651F6D2FD1002F66B7 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		986E82691F6D31E6002F66B7 /* streets.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = streets.geojson; sourceTree = "<group>"; };
 		986E826A1F6D31E6002F66B7 /* points.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = points.geojson; sourceTree = "<group>"; };
+		986E826D1F6D3311002F66B7 /* PointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointTests.swift; sourceTree = "<group>"; };
+		986E826F1F6D3A49002F66B7 /* StreetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreetTests.swift; sourceTree = "<group>"; };
+		986E82711F6D3BC6002F66B7 /* GeometryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTests.swift; sourceTree = "<group>"; };
+		986E82731F6D3E15002F66B7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		986E82751F6D3E5F002F66B7 /* GeoFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFeatureTests.swift; sourceTree = "<group>"; };
 		98F098821F6D281C00765F6B /* CycleHack_AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CycleHack_AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98F098851F6D281C00765F6B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98F098871F6D281C00765F6B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +150,7 @@
 				98F0988C1F6D281C00765F6B /* Assets.xcassets */,
 				98F0988E1F6D281C00765F6B /* LaunchScreen.storyboard */,
 				98F098911F6D281C00765F6B /* Info.plist */,
+				986E82731F6D3E15002F66B7 /* Extensions.swift */,
 			);
 			path = CycleHack_AR;
 			sourceTree = "<group>";
@@ -149,6 +160,10 @@
 			children = (
 				98F0989A1F6D281C00765F6B /* CycleHack_ARTests.swift */,
 				98F0989C1F6D281C00765F6B /* Info.plist */,
+				986E826D1F6D3311002F66B7 /* PointTests.swift */,
+				986E826F1F6D3A49002F66B7 /* StreetTests.swift */,
+				986E82711F6D3BC6002F66B7 /* GeometryTests.swift */,
+				986E82751F6D3E5F002F66B7 /* GeoFeatureTests.swift */,
 			);
 			path = CycleHack_ARTests;
 			sourceTree = "<group>";
@@ -372,6 +387,7 @@
 				98F098881F6D281C00765F6B /* ViewController.swift in Sources */,
 				986E82641F6D2EA6002F66B7 /* Street.swift in Sources */,
 				98F098861F6D281C00765F6B /* AppDelegate.swift in Sources */,
+				986E82741F6D3E15002F66B7 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +395,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				986E826E1F6D3311002F66B7 /* PointTests.swift in Sources */,
+				986E82761F6D3E5F002F66B7 /* GeoFeatureTests.swift in Sources */,
+				986E82721F6D3BC6002F66B7 /* GeometryTests.swift in Sources */,
+				986E82701F6D3A49002F66B7 /* StreetTests.swift in Sources */,
 				98F0989B1F6D281C00765F6B /* CycleHack_ARTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

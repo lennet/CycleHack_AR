@@ -12,8 +12,8 @@ enum GeoFeatureType: String {
     case feature = "Feature"
 }
 
-struct GeoFeature<T: Codable>: Codable {
+struct GeoFeature<T: Codable, P: Codable>: Codable {
     var type: String
     var properties: T
-    var geometry: Geometry
+    var geometry: Geometry<P>
 }

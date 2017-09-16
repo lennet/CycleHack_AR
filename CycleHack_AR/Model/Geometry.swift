@@ -13,7 +13,7 @@ enum GeometryType: String {
     case multiLineString = "MultiLineString"
 }
 
-struct Geometry: Codable {
-    var type: GeometryType
-    var coordinates: [Float]
+struct Geometry<T: Codable>: Codable {
+    var type: String
+    var coordinates: T
 }

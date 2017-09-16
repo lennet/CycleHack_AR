@@ -12,5 +12,5 @@ struct Street: Codable {
     var name: String
     var length: Float
     var count: Int
-    var count_by_length: Int
+    var count_by_length: Float
 }
