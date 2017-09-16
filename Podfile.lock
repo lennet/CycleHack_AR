@@ -2,21 +2,21 @@ PODS:
   - ARCL (1.0)
 
 DEPENDENCIES:
-  - ARCL (from `https://github.com/wemap/ARKit-CoreLocation`, branch `master`)
+  - ARCL (from `https://github.com/wemap/ARKit-CoreLocation`, branch `polylines`)
 
 EXTERNAL SOURCES:
   ARCL:
-    :branch: master
+    :branch: polylines
     :git: https://github.com/wemap/ARKit-CoreLocation
 
 CHECKOUT OPTIONS:
   ARCL:
-    :commit: e4550c493c910165a9c71875dafcdce73d7bc2bd
+    :commit: 497e58df6fbd8ac27f9988c35858fde49b38e945
     :git: https://github.com/wemap/ARKit-CoreLocation
 
 SPEC CHECKSUMS:
-  ARCL: 683bb04ef3e1c6b9fa204950eb41bd2c049152d0
+  ARCL: ce94e8018a01151f37ba9f02e9dd7bdc6618f0f6
 
-PODFILE CHECKSUM: 870e4fc6308f1e0f994e80bfe132887be5aaaa87
+PODFILE CHECKSUM: 144e2a2c0be6770880ef4c5e4a935ccf34f84bcb
 
 COCOAPODS: 1.1.1

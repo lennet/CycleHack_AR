@@ -61,6 +61,7 @@
 		986E82791F6D586A002F66B7 /* PanIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanIndicatorView.swift; sourceTree = "<group>"; };
 		98D62FBE1F6D7CF60024CE48 /* bicycle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = bicycle.scn; sourceTree = "<group>"; };
 		98D62FC01F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Interpolation.swift"; sourceTree = "<group>"; };
+		98D62FC21F6DAD250024CE48 /* years_overview.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = years_overview.json; path = CycleHack_AR_data_analysis/years_overview.json; sourceTree = SOURCE_ROOT; };
 		98F098821F6D281C00765F6B /* CycleHack_AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CycleHack_AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98F098851F6D281C00765F6B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98F098871F6D281C00765F6B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				98D62FBE1F6D7CF60024CE48 /* bicycle.scn */,
+				98D62FC21F6DAD250024CE48 /* years_overview.json */,
 				986E826A1F6D31E6002F66B7 /* points.geojson */,
 				986E82691F6D31E6002F66B7 /* streets.geojson */,
 			);

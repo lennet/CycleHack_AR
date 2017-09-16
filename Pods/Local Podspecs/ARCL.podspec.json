@@ -19,7 +19,7 @@
     "ios": "11.0"
   },
   "requires_arc": true,
-  "source_files": "ARKit+CoreLocation/Source/*.swift",
+  "source_files": "ARKit+CoreLocation/Source/**/*.{swift}",
   "frameworks": [
     "Foundation",
     "UIKit",

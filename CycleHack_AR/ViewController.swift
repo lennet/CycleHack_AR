@@ -95,7 +95,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         sceneLocationView.frame = view.frame
         sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
         sceneLocationView.showAxesNode = true
-        sceneLocationView.locationDelegate = self
+        sceneLocationView.locationViewDelegate = self
         view.insertSubview(sceneLocationView, at: 0)
     }
     
@@ -264,27 +264,27 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        guard motion == .motionShake else { return }
-        guard let position = sceneLocationView.currentScenePosition() else { return }
-        let insertionYOffset: Float = 0.5
-        let scene = SCNScene(named: "bicycle.scn")
-        if let node = scene?.rootNode.childNodes.first {
-            
-
-
-        for i in 0...100 {
-            node.position = SCNVector3Make(
-                position.x - 50 + Float(i),
-                position.y + insertionYOffset + Float(i),
-                position.z - 100 + Float(i)
-            )
-//            let when = DispatchTime.now() + 0.1
-//                DispatchQueue.main.asyncAfter(deadline: when) {
-//                    self.sceneLocationView.add(node: node)
-//                }
-            }
-
-        }
+//        guard motion == .motionShake else { return }
+////        guard let position = sceneLocationView.currentScenePosition() else { return }
+//        let insertionYOffset: Float = 0.5
+//        let scene = SCNScene(named: "bicycle.scn")
+//        if let node = scene?.rootNode.childNodes.first {
+//            
+//
+//
+//        for i in 0...100 {
+//            node.position = SCNVector3Make(
+//                position.x - 50 + Float(i),
+//                position.y + insertionYOffset + Float(i),
+//                position.z - 100 + Float(i)
+//            )
+////            let when = DispatchTime.now() + 0.1
+////                DispatchQueue.main.asyncAfter(deadline: when) {
+////                    self.sceneLocationView.add(node: node)
+////                }
+//            }
+//
+//        }
         
     }
     

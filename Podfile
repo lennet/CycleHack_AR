@@ -6,7 +6,7 @@ target 'CycleHack_AR' do
   use_frameworks!
 
   # Pods for CycleHack_AR
-  pod 'ARCL', :git => 'https://github.com/wemap/ARKit-CoreLocation', :branch => 'master'
+  pod 'ARCL', :git => 'https://github.com/wemap/ARKit-CoreLocation', :branch => 'polylines'
   target 'CycleHack_ARTests' do
     inherit! :search_paths
     # Pods for testing
