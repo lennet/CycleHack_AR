@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		13286BFE1C094BE14A340AF6 /* Pods_CycleHack_AR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC3ACF6033D37791105B881 /* Pods_CycleHack_AR.framework */; };
+		9861344C1F6DAE6D0028B665 /* DataOverYearModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9861344B1F6DAE6D0028B665 /* DataOverYearModel.swift */; };
+		9861344E1F6DAF660028B665 /* years_overview.json in Resources */ = {isa = PBXBuildFile; fileRef = 98D62FC21F6DAD250024CE48 /* years_overview.json */; };
 		986E82601F6D2E6D002F66B7 /* GeoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E825F1F6D2E6D002F66B7 /* GeoFeature.swift */; };
 		986E82621F6D2E94002F66B7 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82611F6D2E94002F66B7 /* Point.swift */; };
 		986E82641F6D2EA6002F66B7 /* Street.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82631F6D2EA6002F66B7 /* Street.swift */; };
@@ -46,6 +48,7 @@
 		0F07CFEDC5ABCF5713E64F19 /* Pods_CycleHack_ARTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CycleHack_ARTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		34783B64E83F45349D36BDA5 /* Pods-CycleHack_ARTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CycleHack_ARTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CycleHack_ARTests/Pods-CycleHack_ARTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8BC3ACF6033D37791105B881 /* Pods_CycleHack_AR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CycleHack_AR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9861344B1F6DAE6D0028B665 /* DataOverYearModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataOverYearModel.swift; sourceTree = "<group>"; };
 		986E825F1F6D2E6D002F66B7 /* GeoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFeature.swift; sourceTree = "<group>"; };
 		986E82611F6D2E94002F66B7 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		986E82631F6D2EA6002F66B7 /* Street.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Street.swift; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 				986E82631F6D2EA6002F66B7 /* Street.swift */,
 				986E82651F6D2FD1002F66B7 /* Geometry.swift */,
 				986E82771F6D401D002F66B7 /* GeoFeatureCollection.swift */,
+				9861344B1F6DAE6D0028B665 /* DataOverYearModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,6 +290,7 @@
 				98F0988D1F6D281C00765F6B /* Assets.xcassets in Resources */,
 				986E826B1F6D31EE002F66B7 /* points.geojson in Resources */,
 				98F0988B1F6D281C00765F6B /* Main.storyboard in Resources */,
+				9861344E1F6DAF660028B665 /* years_overview.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +410,7 @@
 				986E827A1F6D586A002F66B7 /* PanIndicatorView.swift in Sources */,
 				986E82641F6D2EA6002F66B7 /* Street.swift in Sources */,
 				98F098861F6D281C00765F6B /* AppDelegate.swift in Sources */,
+				9861344C1F6DAE6D0028B665 /* DataOverYearModel.swift in Sources */,
 				986E82741F6D3E15002F66B7 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
