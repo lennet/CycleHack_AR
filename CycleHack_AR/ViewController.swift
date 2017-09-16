@@ -24,10 +24,11 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         sceneLocationView.locationDelegate = self
         
         // example node with coordinates for a street near Alexanderplatz
-        let pinCoordinate = CLLocationCoordinate2D(latitude: 52.526910, longitude: 13.415347)
-        let pinLocation = CLLocation(coordinate: pinCoordinate, altitude: 236)
+        let pinCoordinate = CLLocationCoordinate2D(latitude: 52.528700, longitude: 13.416931)
+        let pinLocation = CLLocation(coordinate: pinCoordinate, altitude: 45)
         let pinImage = UIImage(named: "pin")!
         let pinLocationNode = LocationAnnotationNode(location: pinLocation, image: pinImage)
+        pinLocationNode.scaleRelativeToDistance = true
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
             
         view.addSubview(sceneLocationView)
@@ -36,7 +37,6 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         mapView.alpha = 0.75
         mapView.showsUserLocation = true
         view.addSubview(mapView)
-            
     }
     
     override func viewWillAppear(_ animated: Bool) {
