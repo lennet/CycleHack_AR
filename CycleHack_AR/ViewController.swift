@@ -10,6 +10,13 @@ import UIKit
 import ARCL
 import MapKit
 import SceneKit
+import SceneKit.ModelIO
+import ModelIO
+
+enum CollisionCategory: Int {
+    case ground
+    case bicycle
+}
 
 extension MKCoordinateRegion {
     
@@ -28,88 +35,174 @@ extension LocationAnnotationNode {
     
 }
 
+extension LocationNode {
+    
+    convenience init(streetFeature: GeoFeature<Point, [Double]>, radius: CGFloat){
+        let sphere = SCNSphere(radius: radius)
+        self.init(location: streetFeature.location)
+        geometry = sphere
+    }
+    
+}
+
+
 class ViewController: UIViewController,
-MKMapViewDelegate, SceneLocationViewDelegate {
+MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
     let sceneLocationView = SceneLocationView()
-    let mapView = MKMapView()
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+    var currentNodes = Set<LocationNode>()
+    var startingRegionSet = false
 
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mapBlurOverlay: UIVisualEffectView!
+    @IBOutlet weak var panIndicatorView: PanIndicatorView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        sceneLocationView.showAxesNode = true
-        sceneLocationView.locationDelegate = self
-        
-        // example node with coordinates for a street near Alexanderplatz
-        let pinCoordinate = CLLocationCoordinate2D(latitude: 52.528700, longitude: 13.416931)
-        let pinLocation = CLLocation(coordinate: pinCoordinate, altitude: 45)
-        let pinImage = UIImage(named: "pin")!
-        let pinLocationNode = LocationAnnotationNode(location: pinLocation, image: pinImage)
-        pinLocationNode.scaleRelativeToDistance = true
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
-            
-        view.addSubview(sceneLocationView)
-        
-        mapView.delegate = self
-        mapView.alpha = 0.75
-        mapView.showsUserLocation = true
-        mapView.setRegion(.berlin, animated: false)
-        view.addSubview(mapView)
-
-        
-        displayPointFeatures()
+        configureSceneView()
+        configureMapView()
+        configureLocationManager()
+        displayPointFeaturesOnMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        becomeFirstResponder()
+        mapContainerHeightConstraint.constant = view.frame.height/2
         sceneLocationView.run()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        resignFirstResponder()
         super.viewWillDisappear(animated)
         
         sceneLocationView.pause()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        mapView.frame = CGRect(x: 0,
-                               y: self.view.frame.size.height/2,
-                               width: self.view.frame.size.width,
-                               height: self.view.frame.size.height/2)
-        sceneLocationView.frame = CGRect(x: 0,
-                                         y: 0,
-                                         width: self.view.frame.size.width,
-                                         height: self.view.frame.size.height)
+    func configureMapView() {
+        mapView.showsUserLocation = true
+        mapView.setRegion(.berlin, animated: false)
+        mapView.layer.cornerRadius = 8
+        mapView.layer.maskedCorners = CACornerMask.layerMinXMinYCorner.union(.layerMaxXMinYCorner)
     }
-
+    
+    func configureSceneView() {
+        sceneLocationView.frame = view.frame
+        sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
+        sceneLocationView.showAxesNode = true
+        sceneLocationView.locationDelegate = self
+        view.insertSubview(sceneLocationView, at: 0)
+    }
+    
+    func configureLocationManager() {
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.distanceFilter = 5
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // add pin to current position on touch
-        if let _ = touches.first{
-            let image = UIImage(named: "pin")!
-            let annotationNode = LocationAnnotationNode(location: nil, image: image)
-            annotationNode.scaleRelativeToDistance = true
-            sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
-        }
+//
+//        // add pin to current position on touch
+//        if let _ = touches.first{
+//            let image = UIImage(named: "pinBlue")!
+//            let annotationNode = LocationAnnotationNode(location: nil, image: image)
+//            annotationNode.scaleRelativeToDistance = true
+//            sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
+//        }
     }
     
     func displayPointFeatures() {
         let pointFeatures = PointFeatureCollection()
-        pointFeatures.features.forEach(display)
+        
+        pointFeatures
+            .features
+            .filter(inDesiredArea)
+            .forEach(displayARNodes)
     }
     
-    func display(streetFeature: GeoFeature<Point, [Double]>) {
-        let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
-        locationAnnotationNode.scaleRelativeToDistance = true
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
+    func displayPointFeaturesOnMap() {
+        let pointFeatures = PointFeatureCollection()
         
+        pointFeatures
+            .features
+            .forEach(displayMapNodes)
+    }
+    
+    func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
+        return isInArea(distanceLimit: 500, coordinate: streetFeature.location)
+    }
+    
+    
+    public func isInArea(distanceLimit: Double, coordinate: CLLocation) -> Bool {
+        guard let distance = userDistance(from: coordinate) else {
+            return false
+        }
+        return distance <= distanceLimit
+    }
+    
+    func displayARNodes(streetFeature: GeoFeature<Point, [Double]>) {
+        let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
+        locationNode.continuallyUpdatePositionAndScale = true
+        
+        
+        let graphNode = SCNNode.graphNode(with: [1,5,7,3,7,9], for: .red)
+        locationNode.addChildNode(graphNode)
+        
+        currentNodes.insert(locationNode)
+        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
+    }
+    
+    func displayMapNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
-        mapAnnotation.title = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
+        mapAnnotation.subtitle = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
         mapView.addAnnotation(mapAnnotation)
+    }
+    
+    // get distance from point to current location
+    private func userDistance(from point: CLLocation) -> Double? {
+        guard let userLocation = currentLocation else {
+            print("Error - User location unknown!")
+            return nil
+        }
+        return userLocation.distance(from: point)
+    }
+    
+    func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+
+        currentLocation = locations.last
+        currentNodes.forEach { (node) in
+            sceneLocationView.removeLocationNode(locationNode: node)
+        }
+        currentNodes.removeAll()
+        displayPointFeatures()
+
+        currentLocation = locations.last!
+        if !startingRegionSet {
+            setStartingRegion()
+        } else {
+            currentLocation = locations.last
+            currentNodes.removeAll()
+            displayPointFeatures()
+        }
+    }
+    
+    private func setStartingRegion(){
+        let latitude = currentLocation!.coordinate.latitude
+        let longitude = currentLocation!.coordinate.longitude
+        let latDegr: CLLocationDegrees = 0.005
+        let lonDegr: CLLocationDegrees = 0.005
+        let span: MKCoordinateSpan = MKCoordinateSpanMake(latDegr, lonDegr)
+        let location: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let region: MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+        mapView.setRegion(region, animated: true)
+        startingRegionSet = true
     }
     
     // MARK: MapViewDelegate
@@ -119,37 +212,81 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     }
     
     @objc func updateLocation() {
-        print("updateLocation called")
-        print("Current number of locationNodes:  \(self.sceneLocationView)")
+        //        print("updateLocation called")
+        //        print("Current number of locationNodes:  \(self.sceneLocationView)")
     }
-
+    
     
     // MARK: SceneLocatioNViewDelegate
     
     func sceneLocationViewDidAddSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-        print("SceneLocationViewDidAddSceneLocationEstimae")
     }
     
     func sceneLocationViewDidRemoveSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
-        print("sceneLocationViewDidRemoveSceneLocationEstimate")
-
+        
     }
     
     func sceneLocationViewDidConfirmLocationOfNode(sceneLocationView: SceneLocationView, node: LocationNode) {
-        print("sceneLocationViewDidConfirmLocationOfNode")
-
+        
     }
     
     func sceneLocationViewDidSetupSceneNode(sceneLocationView: SceneLocationView, sceneNode: SCNNode) {
-        print("sceneLocationViewDidSetupSceneNode")
-
+        
     }
     
     func sceneLocationViewDidUpdateLocationAndScaleOfLocationNode(sceneLocationView: SceneLocationView, locationNode: LocationNode) {
-        print("sceneLocationViewDidUpdateLocationAndScaleOfLocationNode")
-
+        
     }
+    
+    @IBAction func handleMapContainerPan(_ sender: UIPanGestureRecognizer) {
+        guard let containerView = sender.view else { return }
+        let translation = sender.translation(in: containerView)
+        sender.setTranslation(.zero, in: containerView)
+        
+        let panIndicatorHeight = mapContainerHeightConstraint.constant - mapView.frame.height
+        
+        var newHeight = mapContainerHeightConstraint.constant - translation.y
+        newHeight = max(newHeight, panIndicatorHeight)
+        newHeight = min(newHeight, view.frame.height*0.8)
+        
+        switch sender.state {
+        case .ended,
+             .cancelled,
+             .failed:
+            mapBlurOverlay.isHidden = true
+            panIndicatorView.touchesEnded([], with: nil)
+        default:
+            mapBlurOverlay.isHidden = false
+            panIndicatorView.touchesBegan([], with: nil)
+        }
+        
+        mapContainerHeightConstraint.constant = newHeight
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        guard motion == .motionShake else { return }
+        guard let position = sceneLocationView.currentScenePosition() else { return }
+        let insertionYOffset: Float = 0.5
+        let scene = SCNScene(named: "bicycle.scn")
+        if let node = scene?.rootNode.childNodes.first {
+            
 
 
+        for i in 0...100 {
+            node.position = SCNVector3Make(
+                position.x - 50 + Float(i),
+                position.y + insertionYOffset + Float(i),
+                position.z - 100 + Float(i)
+            )
+//            let when = DispatchTime.now() + 0.1
+//                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.sceneLocationView.add(node: node)
+//                }
+            }
+
+        }
+        
+    }
+    
 }
 
