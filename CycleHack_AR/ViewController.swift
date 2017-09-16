@@ -43,21 +43,8 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sceneLocationView.showAxesNode = true
-        sceneLocationView.locationDelegate = self
-        
-        // example node with coordinates for a street near Alexanderplatz
-        let pinCoordinate = CLLocationCoordinate2D(latitude: 52.528700, longitude: 13.416931)
-        let pinLocation = CLLocation(coordinate: pinCoordinate, altitude: 45)
-        let pinImage = UIImage(named: "pin")!
-        let pinLocationNode = LocationAnnotationNode(location: pinLocation, image: pinImage)
-        pinLocationNode.scaleRelativeToDistance = true
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
-        
-        view.insertSubview(sceneLocationView, at: 0)
-        
-        mapView.showsUserLocation = true
-        mapView.setRegion(.berlin, animated: false)
+        configureSceneView()
+        configureMapView()
         displayPointFeatures()
     }
     
@@ -73,17 +60,19 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         sceneLocationView.pause()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        mapView.frame = CGRect(x: 0,
-                               y: self.view.frame.size.height/2,
-                               width: self.view.frame.size.width,
-                               height: self.view.frame.size.height/2)
-        sceneLocationView.frame = CGRect(x: 0,
-                                         y: 0,
-                                         width: self.view.frame.size.width,
-                                         height: self.view.frame.size.height)
+    func configureMapView() {
+        mapView.showsUserLocation = true
+        mapView.setRegion(.berlin, animated: false)
+        mapView.layer.cornerRadius = 8
+        mapView.layer.maskedCorners = CACornerMask.layerMinXMinYCorner.union(.layerMaxXMinYCorner)
+    }
+    
+    func configureSceneView() {
+        sceneLocationView.frame = view.frame
+        sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
+        sceneLocationView.showAxesNode = true
+        sceneLocationView.locationDelegate = self
+        view.insertSubview(sceneLocationView, at: 0)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
