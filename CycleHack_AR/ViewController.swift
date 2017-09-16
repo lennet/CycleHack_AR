@@ -36,6 +36,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     let sceneLocationView = SceneLocationView()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
+    var currentNodes = Set<LocationNode>()
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
@@ -119,6 +120,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     func display(streetFeature: GeoFeature<Point, [Double]>) {
         let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
         locationAnnotationNode.scaleRelativeToDistance = true
+        currentNodes.insert(locationAnnotationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
         
         let mapAnnotation = MKPointAnnotation()
@@ -137,8 +139,8 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
-        
         currentLocation = locations.last
+        currentNodes.removeAll()
         displayPointFeatures()
         
     }
