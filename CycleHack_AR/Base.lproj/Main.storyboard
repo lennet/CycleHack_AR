@@ -92,7 +92,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" minimumNumberOfTouches="1" id="5K7-I2-abI">
+                <panGestureRecognizer delaysTouchesEnded="NO" minimumNumberOfTouches="1" id="5K7-I2-abI">
                     <connections>
                         <action selector="handleMapContainerPan:" destination="BYZ-38-t0r" id="ZhZ-YH-dY5"/>
                     </connections>
