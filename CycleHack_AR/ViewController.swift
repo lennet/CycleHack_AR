@@ -54,6 +54,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var currentNodes = Set<LocationNode>()
+    var startingRegionSet = false
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
@@ -66,6 +67,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         configureSceneView()
         configureMapView()
         configureLocationManager()
+        displayPointFeaturesOnMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,11 +123,19 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         pointFeatures
             .features
             .filter(inDesiredArea)
-            .forEach(display)
+            .forEach(displayVRNodes)
+    }
+    
+    func displayPointFeaturesOnMap() {
+        let pointFeatures = PointFeatureCollection()
+        
+        pointFeatures
+            .features
+            .forEach(displayMapNodes)
     }
     
     func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
-        return isInArea(distanceLimit: 500.0, coordinate: streetFeature.location)
+        return isInArea(distanceLimit: 200.0, coordinate: streetFeature.location)
     }
     
     
@@ -136,13 +146,14 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         return distance <= distanceLimit
     }
     
-    func display(streetFeature: GeoFeature<Point, [Double]>) {
+    func displayVRNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
         locationNode.continuallyUpdatePositionAndScale = true
         currentNodes.insert(locationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
-        
-        
+    }
+    
+    func displayMapNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
         mapAnnotation.subtitle = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
@@ -159,9 +170,34 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+
         currentLocation = locations.last
+        currentNodes.forEach { (node) in
+            sceneLocationView.removeLocationNode(locationNode: node)
+        }
         currentNodes.removeAll()
         displayPointFeatures()
+
+        currentLocation = locations.last!
+        if !startingRegionSet {
+            setStartingRegion()
+        } else {
+            currentLocation = locations.last
+            currentNodes.removeAll()
+            displayPointFeatures()
+        }
+    }
+    
+    private func setStartingRegion(){
+        let latitude = currentLocation!.coordinate.latitude
+        let longitude = currentLocation!.coordinate.longitude
+        let latDegr: CLLocationDegrees = 0.005
+        let lonDegr: CLLocationDegrees = 0.005
+        let span: MKCoordinateSpan = MKCoordinateSpanMake(latDegr, lonDegr)
+        let location: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let region: MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+        mapView.setRegion(region, animated: true)
+        startingRegionSet = true
     }
     
     // MARK: MapViewDelegate
