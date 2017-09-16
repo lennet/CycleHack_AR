@@ -28,6 +28,16 @@ extension LocationAnnotationNode {
     
 }
 
+extension LocationNode {
+    
+    convenience init(streetFeature: GeoFeature<Point, [Double]>, radius: CGFloat){
+        let sphere = SCNSphere(radius: radius)
+        self.init(location: streetFeature.location)
+        geometry = sphere
+    }
+    
+}
+
 
 class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
@@ -118,10 +128,10 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func display(streetFeature: GeoFeature<Point, [Double]>) {
-        let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
-        locationAnnotationNode.scaleRelativeToDistance = true
-        currentNodes.insert(locationAnnotationNode)
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
+        let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
+        locationNode.continuallyUpdatePositionAndScale = true
+        currentNodes.insert(locationNode)
+        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
