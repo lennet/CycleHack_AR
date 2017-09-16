@@ -38,6 +38,8 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mapBlurOverlay: UIVisualEffectView!
+    @IBOutlet weak var panIndicatorView: PanIndicatorView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,8 +167,10 @@ MKMapViewDelegate, SceneLocationViewDelegate {
              .cancelled,
              .failed:
             mapBlurOverlay.isHidden = true
+            panIndicatorView.touchesEnded([], with: nil)
         default:
             mapBlurOverlay.isHidden = false
+            panIndicatorView.touchesBegan([], with: nil)
         }
         
         mapContainerHeightConstraint.constant = newHeight
