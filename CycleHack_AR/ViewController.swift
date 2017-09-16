@@ -59,6 +59,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         configureSceneView()
         configureMapView()
         configureLocationManager()
+        displayPointFeaturesOnMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,17 +96,27 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationManager.startUpdatingLocation()
     }
     
+    
+    
     func displayPointFeatures() {
         let pointFeatures = PointFeatureCollection()
         
         pointFeatures
             .features
             .filter(inDesiredArea)
-            .forEach(display)
+            .forEach(displayVRNodes)
+    }
+    
+    func displayPointFeaturesOnMap() {
+        let pointFeatures = PointFeatureCollection()
+        
+        pointFeatures
+            .features
+            .forEach(displayMapNodes)
     }
     
     func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
-        return isInArea(distanceLimit: 500.0, coordinate: streetFeature.location)
+        return isInArea(distanceLimit: 200.0, coordinate: streetFeature.location)
     }
 
     
@@ -116,12 +127,14 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         return distance <= distanceLimit
     }
     
-    func display(streetFeature: GeoFeature<Point, [Double]>) {
+    func displayVRNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
         locationNode.continuallyUpdatePositionAndScale = true
         currentNodes.insert(locationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
-        
+    }
+    
+    func displayMapNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
         mapAnnotation.subtitle = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
