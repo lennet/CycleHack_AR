@@ -183,7 +183,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         let translation = sender.translation(in: containerView)
         sender.setTranslation(.zero, in: containerView)
         
-        let panIndicatorHeight = containerView.frame.height - mapContainerHeightConstraint.constant
+        let panIndicatorHeight = mapContainerHeightConstraint.constant - mapView.frame.height
         
         var newHeight = mapContainerHeightConstraint.constant - translation.y
         newHeight = max(newHeight, panIndicatorHeight)

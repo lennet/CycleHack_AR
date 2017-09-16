@@ -21,29 +21,29 @@
                                 <rect key="frame" x="0.0" y="539" width="375" height="128"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9tD-oe-nYZ" customClass="PanIndicatorView" customModule="CycleHack_AR" customModuleProvider="target">
-                                        <rect key="frame" x="155.5" y="15" width="64" height="29"/>
+                                        <rect key="frame" x="155.5" y="54" width="64" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="64" id="4kq-ad-8E0"/>
                                         </constraints>
                                     </view>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cca-zE-hIj">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="84"/>
+                                        <rect key="frame" x="0.0" y="88" width="375" height="40"/>
                                         <connections>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="9FH-2a-AJe"/>
                                         </connections>
                                     </mapView>
                                     <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAR-cG-k4n">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="84"/>
+                                        <rect key="frame" x="0.0" y="88" width="375" height="40"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rjM-c3-kT3">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Asm-kn-AH1">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="Az3-m5-Qt1">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     </view>
                                                     <vibrancyEffect>
@@ -62,12 +62,12 @@
                                     <constraint firstItem="cca-zE-hIj" firstAttribute="top" secondItem="9tD-oe-nYZ" secondAttribute="bottom" id="6gX-pT-rAq"/>
                                     <constraint firstItem="CAR-cG-k4n" firstAttribute="leading" secondItem="f8z-Zx-CnY" secondAttribute="leading" id="GiZ-HV-Coy"/>
                                     <constraint firstItem="9tD-oe-nYZ" firstAttribute="centerX" secondItem="f8z-Zx-CnY" secondAttribute="centerX" id="Sos-pF-Fm2"/>
-                                    <constraint firstItem="9tD-oe-nYZ" firstAttribute="top" secondItem="f8z-Zx-CnY" secondAttribute="top" constant="15" id="Sqd-5P-EZk"/>
+                                    <constraint firstItem="9tD-oe-nYZ" firstAttribute="top" secondItem="f8z-Zx-CnY" secondAttribute="top" constant="54" id="Sqd-5P-EZk"/>
                                     <constraint firstAttribute="trailing" secondItem="cca-zE-hIj" secondAttribute="trailing" id="WQz-p9-zrp"/>
                                     <constraint firstAttribute="height" constant="128" id="ZF4-Ra-TGX"/>
                                     <constraint firstItem="CAR-cG-k4n" firstAttribute="height" secondItem="cca-zE-hIj" secondAttribute="height" id="bbL-tl-kKr"/>
                                     <constraint firstAttribute="trailing" secondItem="CAR-cG-k4n" secondAttribute="trailing" id="dgL-jp-xIb"/>
-                                    <constraint firstItem="cca-zE-hIj" firstAttribute="top" secondItem="f8z-Zx-CnY" secondAttribute="top" constant="44" id="hex-u5-qos"/>
+                                    <constraint firstItem="cca-zE-hIj" firstAttribute="top" secondItem="f8z-Zx-CnY" secondAttribute="top" constant="88" id="hex-u5-qos"/>
                                     <constraint firstItem="cca-zE-hIj" firstAttribute="leading" secondItem="f8z-Zx-CnY" secondAttribute="leading" id="oG5-0g-dbs"/>
                                     <constraint firstAttribute="bottom" secondItem="cca-zE-hIj" secondAttribute="bottom" id="sL1-Ky-NFP"/>
                                 </constraints>
