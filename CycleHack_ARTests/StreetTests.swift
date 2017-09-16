@@ -21,7 +21,7 @@ class StreetTests: XCTestCase {
         super.tearDown()
     }
     
-    func testEncodeStreet() {
+    func testDecodeStreet() {
         let jsonString = "{ \"name\": \"Alt-Heiligensee\", \"length\": 0.024733295307219308, \"count\": 2, \"count_by_length\": 80.862658014527796 }"
         let data = jsonString.data(using: .utf8)!
         let street = try! JSONDecoder().decode(Street.self, from: data)

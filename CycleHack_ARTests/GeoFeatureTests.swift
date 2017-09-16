@@ -20,13 +20,8 @@ class GeoFeatureTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testEncodeStreetGeofeature() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testEncodePointGeofeature() {
+
+    func tesDecodePointGeofeature() {
         let jsonString = "{ \"type\": \"Feature\", \"properties\": { \"name\": \"ALT-REINICKENDORF / ROEDERNALLEE / VELTENER STR.\", \"year\": 2016, \"count\": 2, \"directorate\": \"11\" }, \"geometry\": { \"type\": \"Point\", \"coordinates\": [ 13.3477435, 52.5758387 ] } }"
         let data = jsonString.data(using: .utf8)!
         let feature = try! JSONDecoder().decode(GeoFeature<Point, [Float]>.self, from: data)
