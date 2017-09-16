@@ -47,6 +47,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var currentNodes = Set<LocationNode>()
+    var startingRegionSet = false
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapContainerHeightConstraint: NSLayoutConstraint!
@@ -151,10 +152,26 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
-        currentLocation = locations.last
-        currentNodes.removeAll()
-        displayPointFeatures()
-        
+        currentLocation = locations.last!
+        if !startingRegionSet {
+            setStartingRegion()
+        } else {
+            currentLocation = locations.last
+            currentNodes.removeAll()
+            displayPointFeatures()
+        }
+    }
+    
+    private func setStartingRegion(){
+        let latitude = currentLocation!.coordinate.latitude
+        let longitude = currentLocation!.coordinate.longitude
+        let latDegr: CLLocationDegrees = 0.005
+        let lonDegr: CLLocationDegrees = 0.005
+        let span: MKCoordinateSpan = MKCoordinateSpanMake(latDegr, lonDegr)
+        let location: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let region: MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+        mapView.setRegion(region, animated: true)
+        startingRegionSet = true
     }
     
     // MARK: MapViewDelegate
