@@ -11,6 +11,14 @@ import ARCL
 import MapKit
 import SceneKit
 
+extension MKCoordinateRegion {
+    
+    static var berlin: MKCoordinateRegion {
+        return MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: 52.520008, longitude: 13.404954), span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+    }
+    
+}
+
 extension LocationAnnotationNode {
     
     convenience init(streetFeature: GeoFeature<Point, [Double]>) {
@@ -45,7 +53,7 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         mapView.delegate = self
         mapView.alpha = 0.75
         mapView.showsUserLocation = true
-        mapView.setCenter(mapView.userLocation.coordinate, animated: true)
+        mapView.setRegion(.berlin, animated: false)
         view.addSubview(mapView)
 
         
@@ -95,13 +103,13 @@ MKMapViewDelegate, SceneLocationViewDelegate {
     
     func display(streetFeature: GeoFeature<Point, [Double]>) {
         let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
+        locationAnnotationNode.scaleRelativeToDistance = true
+        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
         
         let mapAnnotation = MKPointAnnotation()
         mapAnnotation.coordinate = streetFeature.coordinate
         mapAnnotation.title = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
         mapView.addAnnotation(mapAnnotation)
-        
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
     }
     
     // MARK: MapViewDelegate
