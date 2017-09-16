@@ -34,7 +34,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
     let sceneLocationView = SceneLocationView()
-    var numberOfPointsOfInterest = 0
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
 
@@ -89,7 +88,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         // add pin to current position on touch
         if let _ = touches.first{
-            let image = UIImage(named: "pin")!
+            let image = UIImage(named: "pinBlue")!
             let annotationNode = LocationAnnotationNode(location: nil, image: image)
             annotationNode.scaleRelativeToDistance = true
             sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
@@ -118,7 +117,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func display(streetFeature: GeoFeature<Point, [Double]>) {
-        numberOfPointsOfInterest += 1
         let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
         locationAnnotationNode.scaleRelativeToDistance = true
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
