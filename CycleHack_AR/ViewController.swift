@@ -63,8 +63,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: pinLocationNode)
         
         mapView.setRegion(.berlin, animated: false)
-
-        view.addSubview(mapView)
         view.insertSubview(sceneLocationView, at: 0)
         
     }
