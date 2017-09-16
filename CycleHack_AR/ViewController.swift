@@ -50,6 +50,7 @@ class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
+    var distanceLimit: Double = 20
     let sceneLocationView = SceneLocationView()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -126,16 +127,37 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             .forEach(displayARNodes)
     }
     
+    func displayStreetFeatures() {
+        let streetFeatures = StreetFeatureCollection()
+        
+        streetFeatures
+            .features
+            .filter(inDesiredArea)
+            .forEach(displayARNodes)
+    }
+    
+    
     func displayPointFeaturesOnMap() {
         let pointFeatures = PointFeatureCollection()
         
         pointFeatures
             .features
+            .filter(inDesiredArea)
             .forEach(displayMapNodes)
     }
     
-    func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
-        return isInArea(distanceLimit: 500, coordinate: streetFeature.location)
+    func inDesiredArea(pointFeature: GeoFeature<Point, [Double]>) -> Bool {
+        return isInArea(distanceLimit: distanceLimit, coordinate: pointFeature.location)
+    }
+    
+    func inDesiredArea(streetFeature: GeoFeature<Street,[[[Double]]]>)-> Bool {
+        let coordinates = streetFeature.flattenedCoordinates
+        return coordinates
+            .filter{
+                let location = CLLocation(coordinate: $0, altitude: 0)
+                return isInArea(distanceLimit: distanceLimit, coordinate: location)
+            }
+            .count > 0
     }
     
     
@@ -146,8 +168,8 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         return distance <= distanceLimit
     }
     
-    func displayARNodes(streetFeature: GeoFeature<Point, [Double]>) {
-        let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
+    func displayARNodes(pointFeature: GeoFeature<Point, [Double]>) {
+        let locationNode = LocationNode(streetFeature: pointFeature, radius: 5.0)
         locationNode.continuallyUpdatePositionAndScale = true
         
         
@@ -156,6 +178,13 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         currentNodes.insert(locationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
+    }
+    
+    func displayARNodes(streetFeature: GeoFeature<Street,[[[Double]]]>) {
+        let coordinates = streetFeature.flattenedCoordinates
+        let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
+        let polyNode = PolylineNode(polyline: polyline, altitude: 40)
+        sceneLocationView.add(polyNode: polyNode)
     }
     
     func displayMapNodes(streetFeature: GeoFeature<Point, [Double]>) {
@@ -190,6 +219,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             currentLocation = locations.last
             currentNodes.removeAll()
             displayPointFeatures()
+            displayStreetFeatures()
         }
     }
     
