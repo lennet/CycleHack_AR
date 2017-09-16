@@ -22,6 +22,7 @@
 		986E82781F6D401D002F66B7 /* GeoFeatureCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82771F6D401D002F66B7 /* GeoFeatureCollection.swift */; };
 		986E827A1F6D586A002F66B7 /* PanIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986E82791F6D586A002F66B7 /* PanIndicatorView.swift */; };
 		98D62FBF1F6D7E180024CE48 /* bicycle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 98D62FBE1F6D7CF60024CE48 /* bicycle.scn */; };
+		98D62FC11F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D62FC01F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift */; };
 		98F098861F6D281C00765F6B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F098851F6D281C00765F6B /* AppDelegate.swift */; };
 		98F098881F6D281C00765F6B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F098871F6D281C00765F6B /* ViewController.swift */; };
 		98F0988B1F6D281C00765F6B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98F098891F6D281C00765F6B /* Main.storyboard */; };
@@ -59,6 +60,7 @@
 		986E82771F6D401D002F66B7 /* GeoFeatureCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFeatureCollection.swift; sourceTree = "<group>"; };
 		986E82791F6D586A002F66B7 /* PanIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanIndicatorView.swift; sourceTree = "<group>"; };
 		98D62FBE1F6D7CF60024CE48 /* bicycle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = bicycle.scn; sourceTree = "<group>"; };
+		98D62FC01F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Interpolation.swift"; sourceTree = "<group>"; };
 		98F098821F6D281C00765F6B /* CycleHack_AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CycleHack_AR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98F098851F6D281C00765F6B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98F098871F6D281C00765F6B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				98F098911F6D281C00765F6B /* Info.plist */,
 				986E82731F6D3E15002F66B7 /* Extensions.swift */,
 				986E82791F6D586A002F66B7 /* PanIndicatorView.swift */,
+				98D62FC01F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift */,
 			);
 			path = CycleHack_AR;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98D62FC11F6D9EB60024CE48 /* UIBezierPath+Interpolation.swift in Sources */,
 				986E82781F6D401D002F66B7 /* GeoFeatureCollection.swift in Sources */,
 				986E82621F6D2E94002F66B7 /* Point.swift in Sources */,
 				986E82661F6D2FD1002F66B7 /* Geometry.swift in Sources */,

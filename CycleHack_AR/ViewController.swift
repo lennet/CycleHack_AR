@@ -101,20 +101,20 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     func configureLocationManager() {
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        locationManager.distanceFilter = 100.0
+        locationManager.distanceFilter = 5
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // add pin to current position on touch
-        if let _ = touches.first{
-            let image = UIImage(named: "pinBlue")!
-            let annotationNode = LocationAnnotationNode(location: nil, image: image)
-            annotationNode.scaleRelativeToDistance = true
-            sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
-        }
+//
+//        // add pin to current position on touch
+//        if let _ = touches.first{
+//            let image = UIImage(named: "pinBlue")!
+//            let annotationNode = LocationAnnotationNode(location: nil, image: image)
+//            annotationNode.scaleRelativeToDistance = true
+//            sceneLocationView.addLocationNodeForCurrentPosition(locationNode: annotationNode)
+//        }
     }
     
     func displayPointFeatures() {
@@ -123,7 +123,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         pointFeatures
             .features
             .filter(inDesiredArea)
-            .forEach(displayVRNodes)
+            .forEach(displayARNodes)
     }
     
     func displayPointFeaturesOnMap() {
@@ -135,7 +135,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func inDesiredArea(streetFeature: GeoFeature<Point, [Double]>) -> Bool {
-        return isInArea(distanceLimit: 200.0, coordinate: streetFeature.location)
+        return isInArea(distanceLimit: 500, coordinate: streetFeature.location)
     }
     
     
@@ -146,9 +146,14 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         return distance <= distanceLimit
     }
     
-    func displayVRNodes(streetFeature: GeoFeature<Point, [Double]>) {
+    func displayARNodes(streetFeature: GeoFeature<Point, [Double]>) {
         let locationNode = LocationNode(streetFeature: streetFeature, radius: 5.0)
         locationNode.continuallyUpdatePositionAndScale = true
+        
+        
+        let graphNode = SCNNode.graphNode(with: [1,5,7,3,7,9], for: .red)
+        locationNode.addChildNode(graphNode)
+        
         currentNodes.insert(locationNode)
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
     }
@@ -265,17 +270,18 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         let scene = SCNScene(named: "bicycle.scn")
         if let node = scene?.rootNode.childNodes.first {
             
-        node.position = SCNVector3Make(
-            position.x - 100,
-            position.y + insertionYOffset,
-            position.z - 100
-            )
 
-        for _ in 0...100 {
-            let when = DispatchTime.now() + 0.1
-                DispatchQueue.main.asyncAfter(deadline: when) {
+
+        for i in 0...100 {
+            node.position = SCNVector3Make(
+                position.x - 50 + Float(i),
+                position.y + insertionYOffset + Float(i),
+                position.z - 100 + Float(i)
+            )
+//            let when = DispatchTime.now() + 0.1
+//                DispatchQueue.main.asyncAfter(deadline: when) {
                     self.sceneLocationView.add(node: node)
-                }
+//                }
             }
 
         }
