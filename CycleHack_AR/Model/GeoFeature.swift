@@ -19,10 +19,10 @@ struct GeoFeature<T: Codable, P: Codable>: Codable {
     var geometry: Geometry<P>
 }
 
-extension GeoFeature where P == [Float] {
+extension GeoFeature where P == [Double] {
     
     var coordinate: CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: CLLocationDegrees(geometry.coordinates[0]), longitude: CLLocationDegrees(geometry.coordinates[1]))
+        return CLLocationCoordinate2D(latitude: CLLocationDegrees(geometry.coordinates[1]), longitude: CLLocationDegrees(geometry.coordinates[0]))
     }
     
     var location: CLLocation {

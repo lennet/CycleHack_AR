@@ -13,7 +13,7 @@ import SceneKit
 
 extension LocationAnnotationNode {
     
-    convenience init(streetFeature: GeoFeature<Point, [Float]>) {
+    convenience init(streetFeature: GeoFeature<Point, [Double]>) {
         let pinImage = UIImage(named: "pin")!
         self.init(location: streetFeature.location, image: pinImage)
     }
@@ -90,8 +90,14 @@ MKMapViewDelegate, SceneLocationViewDelegate {
         pointFeatures.features.forEach(display)
     }
     
-    func display(streetFeature: GeoFeature<Point, [Float]>) {
+    func display(streetFeature: GeoFeature<Point, [Double]>) {
         let locationAnnotationNode = LocationAnnotationNode(streetFeature: streetFeature)
+        
+        let mapAnnotation = MKPointAnnotation()
+        mapAnnotation.coordinate = streetFeature.coordinate
+        mapAnnotation.title = "\(streetFeature.properties.name): \(streetFeature.properties.count)"
+        mapView.addAnnotation(mapAnnotation)
+        
         sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationAnnotationNode)
     }
     

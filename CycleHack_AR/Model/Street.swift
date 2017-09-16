@@ -10,7 +10,7 @@ import Foundation
 
 struct Street: Codable {
     var name: String
-    var length: Float
+    var length: Double
     var count: Int
-    var count_by_length: Float
+    var count_by_length: Double
 }
