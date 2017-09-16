@@ -55,6 +55,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var currentNodes = Set<LocationNode>()
+    let yearData = DataOverYearModel.getAll()
     var startingRegionSet = false
 
     @IBOutlet weak var mapView: MKMapView!
@@ -173,11 +174,21 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationNode.continuallyUpdatePositionAndScale = true
         
         
-        let graphNode = SCNNode.graphNode(with: [1,5,7,3,7,9], for: .red)
+        defer {
+            sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
+        }
+        // 🙈🚨 TODO: create new data instead of filtering every time
+        guard let yearData = yearData.filter({
+            return $0.street == streetFeature.properties.name && "\($0.directorate)" == streetFeature.properties.directorate
+        }).first else {
+           return
+        }
+        
+        let graphNode = SCNNode.graphNode(with: [yearData.count_2008,yearData.count_2009,yearData.count_2010,yearData.count_2011,yearData.count_2012,yearData.count_2013, yearData.count_2014, yearData.count_2015, yearData.count_2016].map{Float($0)}, for: .red)
         locationNode.addChildNode(graphNode)
         
         currentNodes.insert(locationNode)
-        sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
+        
     }
     
     func displayARNodes(streetFeature: GeoFeature<Street,[[[Double]]]>) {
