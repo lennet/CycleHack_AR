@@ -26,6 +26,6 @@ extension GeoFeature where P == [Float] {
     }
     
     var location: CLLocation {
-        return CLLocation(coordinate: coordinate, altitude: 1)
+        return CLLocation(coordinate: coordinate, altitude: 40)
     }
 }
