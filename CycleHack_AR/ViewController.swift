@@ -280,7 +280,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             )
 //            let when = DispatchTime.now() + 0.1
 //                DispatchQueue.main.asyncAfter(deadline: when) {
-                    self.sceneLocationView.add(node: node)
+//                    self.sceneLocationView.add(node: node)
 //                }
             }
 

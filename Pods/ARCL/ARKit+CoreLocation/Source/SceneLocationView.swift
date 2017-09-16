@@ -10,7 +10,6 @@ import Foundation
 import ARKit
 import CoreLocation
 import MapKit
-import SceneKit
 
 public protocol SceneLocationViewDelegate: class {
     func sceneLocationViewDidAddSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation)
@@ -54,7 +53,6 @@ public class SceneLocationView: ARSCNView, ARSCNViewDelegate {
     public var showAxesNode = false
     
     private(set) var locationNodes = [LocationNode]()
-    var otherNodes = [SCNNode]()
     
     private var sceneLocationEstimates = [SceneLocationEstimate]()
     
@@ -63,10 +61,6 @@ public class SceneLocationView: ARSCNView, ARSCNViewDelegate {
             if sceneNode != nil {
                 for locationNode in locationNodes {
                     sceneNode!.addChildNode(locationNode)
-                }
-                
-                for node in otherNodes {
-                    sceneNode!.addChildNode(node)
                 }
                 
                 locationDelegate?.sceneLocationViewDidSetupSceneNode(sceneLocationView: self, sceneNode: sceneNode!)
@@ -121,7 +115,7 @@ public class SceneLocationView: ARSCNView, ARSCNViewDelegate {
     
     public func run() {
         // Create a session configuration
-		let configuration = ARWorldTrackingConfiguration()
+        let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
         if orientToTrueNorth {
@@ -286,11 +280,6 @@ public class SceneLocationView: ARSCNView, ARSCNViewDelegate {
         
         locationNodes.append(locationNode)
         sceneNode?.addChildNode(locationNode)
-    }
-    
-    public func add(node: SCNNode) {
-        otherNodes.append(node)
-        sceneNode?.addChildNode(node)
     }
     
     public func removeLocationNode(locationNode: LocationNode) {
