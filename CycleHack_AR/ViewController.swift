@@ -187,7 +187,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         var newHeight = mapContainerHeightConstraint.constant - translation.y
         newHeight = max(newHeight, panIndicatorHeight)
-        newHeight = min(newHeight, view.frame.height/0.8)
+        newHeight = min(newHeight, view.frame.height*0.8)
         
         switch sender.state {
         case .ended,
