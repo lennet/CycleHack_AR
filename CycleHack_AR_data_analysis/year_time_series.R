@@ -37,8 +37,34 @@ temp <- temp %>%
         -year_2016
     )
 
-# generate json
-x <- toJSON(unname(split(ct, 1:nrow(temp))))
+temp <- acciPoints %>%
+    select(
+        street,
+        directorate,
+        year,
+        count
+    )
+temp1 <- reshape(temp, idvar = c("street", "directorate"), timevar = "year", sep = "_", direction = "wide")
+
+temp1[is.na(temp1)] <- 0
+
+colnames(temp1) <- c("street", "directorate", 
+                     "y2008", 
+                     "y2009",
+                     "y2010",
+                     "y2011",
+                     "y2012",
+                     "y2013",
+                     "y2014",
+                     "y2015",
+                     "y2016"
+                     )
+
+
+# y2010 + y2011+ y2012 + y2013 + y2014 + y2015 + y2016 
+
+# generate json and save to working directory
+x <- toJSON(unname(split(temp1, 1:nrow(temp1))))
 
 sink("years_overview.json")
 cat(x)

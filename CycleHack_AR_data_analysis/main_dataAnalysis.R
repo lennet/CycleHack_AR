@@ -15,12 +15,9 @@ require("stringr")
 require("dplyr")
 require("scales")
 
-df <- as.data.frame(fread(paste0(getwd(), "/data/out/street_list_2008-15.csv"), stringsAsFactors = TRUE))
-bbikeAccidentStreets <- as.data.frame(fread(paste0(getwd(), "/data/berlin_bike_accident_streets.csv"), stringsAsFactors = TRUE))
-
 acciPoints <- fread(paste0(getwd(), "/data/accident_list_all_years.csv"), stringsAsFactors = TRUE)
 acciPoints2016 <- fread(paste0(getwd(), "/data/out/accidents_list_2016.csv"), stringsAsFactors = TRUE)
-summary(df)
+
 
 ggplot(data = df, mapping = aes(x = crossing)) +
     geom_histogram()

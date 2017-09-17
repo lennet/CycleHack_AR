@@ -11,8 +11,6 @@ import UIKit
 struct DataOverYearModel: Codable {
     var street: String
     var directorate: Int
-    var lat: Double
-    var lng: Double
     var y2008: Int
     var y2009: Int
     var y2010: Int
