@@ -179,7 +179,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         }
         // 🙈🚨 TODO: create new data instead of filtering every time
         guard let yearData = yearData.filter({
-            return $0.street == streetFeature.properties.name && "\($0.directorate)" == streetFeature.properties.directorate
+            return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate
         }).first else {
            return
         }
