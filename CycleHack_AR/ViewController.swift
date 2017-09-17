@@ -188,10 +188,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
         
-        let constraint = SCNLookAtConstraint(target: sceneLocationView.pointOfView)
-        constraint.isGimbalLockEnabled = true
-        locationNode.constraints = [constraint]
-        
 
         
         // 🙈🚨 TODO: create new data instead of filtering every time
@@ -224,6 +220,11 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         maxValueNode.position.y = graphNode.boundingBox.max.y - (maxValueNode.boundingBox.max.y / 2)
         maxValueNode.position.x -= maxValueNode.boundingBox.max.x
         graphNode.addChildNode(maxValueNode)
+        
+        let camera = sceneLocationView.pointOfView!
+        let position = SCNVector3(x: 0, y: -1, z: 0)
+        locationNode.position = camera.convertPosition(position, to: nil)
+        locationNode.rotation = camera.rotation
         
         locationNode.addChildNode(graphNode)
     }
