@@ -94,7 +94,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     func configureSceneView() {
         sceneLocationView.frame = view.frame
         sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
-        sceneLocationView.showAxesNode = true
+        sceneLocationView.showAxesNode = false
         sceneLocationView.locationViewDelegate = self
         view.insertSubview(sceneLocationView, at: 0)
     }
