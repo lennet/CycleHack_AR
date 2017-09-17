@@ -37,9 +37,15 @@ temp <- temp %>%
         -year_2016
     )
 
-# generate json
-x <- toJSON(unname(split(ct, 1:nrow(temp))))
+temp1 <- dcast(temp, street + directorate ~ year + count, value.var = "count", fill = 0)
+temp1 <- reshape(temp, idvar = c("street", "directorate"), timevar = "year", direction = "wide")
 
-sink("years_overview.json")
+
+# y2010 + y2011+ y2012 + y2013 + y2014 + y2015 + y2016 
+
+# generate json and save to working directory
+x <- toJSON(unname(split(temp, 1:nrow(temp))))
+
+sink("years_overview_2.json")
 cat(x)
 sink()
