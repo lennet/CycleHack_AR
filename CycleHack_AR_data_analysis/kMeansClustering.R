@@ -94,11 +94,23 @@ accidentCluster <- kmeans(acciTrain, 5, nstart = 10)
 accidentCluster
 
 ## with data from all years
-accidentCluster_allYears <- kmeans(acciMisMean, 5, nstart = 20)
+accidentCluster_allYears <- kmeans(acciMisMean, 4, nstart = 30)
 accidentCluster_allYears
 
 ##### Model evaluation ####
 # table(acciTrain$directorate, accidentCluster$cluster)
 accidentCluster_allYears$cluster <- as.factor(accidentCluster_allYears$cluster)
-ggplot(acciMisMean, aes(lat, lng, color = accidentCluster_allYears$cluster)) + geom_point()
-
+ggplot(acciMisMean, aes(lat, lng, color = accidentCluster_allYears$cluster)) + 
+    geom_point() +
+    scale_x_continuous(labels = scales::comma) +
+    scale_y_continuous(labels = scales::comma) +
+    labs(
+        title = "Cluster der Unfallstatistiken",
+        subtitle = "2008 bis 2016",
+        caption = "Verkehrunfallstatistik Berlin",
+        x = "Längengrad",
+        y = "Breitengrad",
+        color = "Cluster"
+    ) +
+    theme_minimal()
+silhouette(accidentCluster_allYears)
