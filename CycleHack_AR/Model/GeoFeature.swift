@@ -66,7 +66,7 @@ extension GeoFeature where P == [[[Double]]] {
     }
     
     var flattenedCoordinates: [CLLocationCoordinate2D] {
-        return coordinate.reduce([CLLocationCoordinate2D](),+)
+        return coordinate.reduce([CLLocationCoordinate2D](), +)
     }
     
 }

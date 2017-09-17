@@ -143,7 +143,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         pointFeatures
             .features
-            .filter(inDesiredArea)
             .forEach(displayMapNodes)
     }
     
