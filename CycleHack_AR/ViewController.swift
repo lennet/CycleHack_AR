@@ -222,10 +222,12 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     }
     
     func displayARNodes(streetFeature: GeoFeature<Street,[[[Double]]]>) {
-        let coordinates = streetFeature.flattenedCoordinates
-        let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
-        let polyNode = PolylineNode(polyline: polyline, altitude: 40)
-        sceneLocationView.add(polyNode: polyNode)
+        streetFeature.coordinate.forEach { (coordinates) in
+            let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
+            let polyNode = PolylineNode(polyline: polyline, altitude: 40)
+            self.sceneLocationView.add(polyNode: polyNode)
+
+        }
     }
     
     func displayMapNodes(streetFeature: GeoFeature<Point, [Double]>) {
