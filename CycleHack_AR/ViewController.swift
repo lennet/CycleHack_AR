@@ -48,7 +48,7 @@ class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
-    var distanceLimit: Double = 200
+    var distanceLimit: Double = 30
     let sceneLocationView = SceneLocationView()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -94,7 +94,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     func configureSceneView() {
         sceneLocationView.frame = view.frame
         sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
-        sceneLocationView.showAxesNode = true
+        sceneLocationView.showAxesNode = false
         sceneLocationView.locationViewDelegate = self
         view.insertSubview(sceneLocationView, at: 0)
     }
@@ -178,6 +178,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
 """, extrusionDepth: 5)
         let textNode = SCNNode(geometry: text)
         textNode.position.y += 1
+        textNode.scale = SCNVector3Make(0.5, 0.5, 0.5)
         locationNode.addChildNode(textNode)
         
         defer {
@@ -185,9 +186,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
 //            let position = SCNVector3(x: 0, y: -1, z: 0)
 //            locationNode.position = camera.convertPosition(position, to: nil)
 //            locationNode.rotation = camera.rotation
-            
-            
-            locationNode.scale = SCNVector3Make(0.5, 0.5, 0.5)
+        
             currentNodes.insert(locationNode)
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
@@ -203,8 +202,9 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         let yearCounts: [Float] = [yearData.y2008,yearData.y2009,yearData.y2010,yearData.y2011,yearData.y2012,yearData.y2013, yearData.y2014, yearData.y2015, yearData.y2016].map{Float($0)}
         let graphNode = SCNNode.graphNode(with: yearCounts, for: [#colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1),#colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1),#colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1),#colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1),#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1),#colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1),#colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1),#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)])
+        graphNode.scale = SCNVector3Make(0.5, 0.5, 0.5)
         graphNode.position.y -= 1
-        graphNode.position.x -= graphNode.boundingBox.max.x * 1.5
+        graphNode.position.x -= graphNode.boundingBox.max.x / 1.5
         
         let minText = SCNText(string: "2008", extrusionDepth: 3)
         let minTextNode = SCNNode(geometry: minText)
@@ -223,7 +223,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         maxValueNode.position.y = graphNode.boundingBox.max.y - (maxValueNode.boundingBox.max.y / 2)
         maxValueNode.position.x -= maxValueNode.boundingBox.max.x
         graphNode.addChildNode(maxValueNode)
-        
 
         locationNode.addChildNode(graphNode)
     }
@@ -268,7 +267,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             currentLocation = locations.last
             currentNodes.removeAll()
             displayPointFeatures()
-            displayStreetFeatures()
+//            displayStreetFeatures()
         }
     }
     

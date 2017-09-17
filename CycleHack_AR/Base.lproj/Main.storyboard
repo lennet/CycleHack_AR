@@ -27,7 +27,7 @@
                                             <constraint firstAttribute="width" constant="64" id="4kq-ad-8E0"/>
                                         </constraints>
                                     </view>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cca-zE-hIj">
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsTraffic="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cca-zE-hIj">
                                         <rect key="frame" x="0.0" y="88" width="375" height="40"/>
                                         <connections>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="9FH-2a-AJe"/>
