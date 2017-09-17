@@ -172,8 +172,19 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         let locationNode = LocationNode(streetFeature: pointFeature, radius: 5.0)
         locationNode.continuallyUpdatePositionAndScale = true
         
+        let text = SCNText(string: """
+\(pointFeature.properties.name
+            .components(separatedBy: " / ")
+            .joined(separator: "\n"))
+\(pointFeature.properties.count) \(pointFeature.properties.count > 1 ? "Unfälle" : "Unfall")
+""", extrusionDepth: 5)
+        let textNode = SCNNode(geometry: text)
+        textNode.position.y += 1
+        locationNode.addChildNode(textNode)
         
         defer {
+            locationNode.scale = SCNVector3Make(0.5, 0.5, 0.5)
+            currentNodes.insert(locationNode)
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
         // 🙈🚨 TODO: create new data instead of filtering every time
@@ -183,11 +194,31 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
            return
         }
         
-        let graphNode = SCNNode.graphNode(with: [yearData.count_2008,yearData.count_2009,yearData.count_2010,yearData.count_2011,yearData.count_2012,yearData.count_2013, yearData.count_2014, yearData.count_2015, yearData.count_2016].map{Float($0)}, for: .red)
+        
+        let yearCounts = [yearData.count_2008,yearData.count_2009,yearData.count_2010,yearData.count_2011,yearData.count_2012,yearData.count_2013, yearData.count_2014, yearData.count_2015, yearData.count_2016].map{Float($0)}
+        let graphNode = SCNNode.graphNode(with: yearCounts, for: .red)
+        graphNode.position.y -= 1
+        graphNode.position.x -= graphNode.boundingBox.max.x * 1.5
+        
+        let minText = SCNText(string: "2008", extrusionDepth: 3)
+        let minTextNode = SCNNode(geometry: minText)
+        minTextNode.position.y -= minTextNode.boundingBox.max.y
+        minTextNode.position.x -= minTextNode.boundingBox.max.x/2
+        graphNode.addChildNode(minTextNode)
+        
+        let maxText = SCNText(string: "2016", extrusionDepth: 3)
+        let maxTextNode = SCNNode(geometry: maxText)
+        maxTextNode.position.y -= maxTextNode.boundingBox.max.y
+        maxTextNode.position.x += graphNode.boundingBox.max.x - (maxTextNode.boundingBox.max.x/2)
+        graphNode.addChildNode(maxTextNode)
+        
+        let maxValueText = SCNText(string: "\(yearCounts.max() ?? 0)", extrusionDepth: 3)
+        let maxValueNode = SCNNode(geometry: maxValueText)
+        maxValueNode.position.y = graphNode.boundingBox.max.y - (maxValueNode.boundingBox.max.y / 2)
+        maxValueNode.position.x -= maxValueNode.boundingBox.max.x
+        graphNode.addChildNode(maxValueNode)
+        
         locationNode.addChildNode(graphNode)
-        
-        currentNodes.insert(locationNode)
-        
     }
     
     func displayARNodes(streetFeature: GeoFeature<Street,[[[Double]]]>) {
@@ -256,7 +287,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         //        print("Current number of locationNodes:  \(self.sceneLocationView)")
     }
     
-    
     // MARK: SceneLocatioNViewDelegate
     
     func sceneLocationViewDidAddSceneLocationEstimate(sceneLocationView: SceneLocationView, position: SCNVector3, location: CLLocation) {
@@ -305,7 +335,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
 //        guard motion == .motionShake else { return }
-////        guard let position = sceneLocationView.currentScenePosition() else { return }
+//        guard let position = sceneLocationView.currentScenePosition() else { return }
 //        let insertionYOffset: Float = 0.5
 //        let scene = SCNScene(named: "bicycle.scn")
 //        if let node = scene?.rootNode.childNodes.first {
@@ -318,10 +348,10 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
 //                position.y + insertionYOffset + Float(i),
 //                position.z - 100 + Float(i)
 //            )
-////            let when = DispatchTime.now() + 0.1
-////                DispatchQueue.main.asyncAfter(deadline: when) {
-////                    self.sceneLocationView.add(node: node)
-////                }
+//            let when = DispatchTime.now() + 0.1
+//                DispatchQueue.main.asyncAfter(deadline: when) {
+//                    self.sceneLocationView.add(node: node)
+//                }
 //            }
 //
 //        }

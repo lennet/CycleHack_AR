@@ -20,7 +20,7 @@ func ==<Element : Equatable> (lhs: [[[Element]]], rhs: [[[Element]]]) -> Bool {
 extension SCNNode {
     
     public class func graphNode(with values:[Float],for color: UIColor) -> SCNNode {
-        let size = CGSize(width: 10, height: 10)
+        let size = CGSize(width: 60, height: 60)
         let maxValue = values.max() ?? 0
         var points: [CGPoint] = values.enumerated().map
         {
@@ -39,7 +39,7 @@ extension SCNNode {
         let path = UIBezierPath(points: points, interpolation: .linear)
         
         path.close()
-        let shape = SCNShape(path: path, extrusionDepth: 0.3)
+        let shape = SCNShape(path: path, extrusionDepth: 5)
         
         let material = SCNMaterial()
         material.diffuse.contents = color.withAlphaComponent(0.8)
