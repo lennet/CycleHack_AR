@@ -8,8 +8,12 @@ Based on the accident statistics of Berlin we want to build an virtualization in
 
 ### Thanks 
 Parser by [Stefan Wehrmeyer](https://github.com/stefanw/verkehrsunfallstatistik)
-ARKit + CoreLocation [](https://github.com/ProjectDent/ARKit-CoreLocation)
-Statistics to Bike Accidents Berlin 2017 [](https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0ahUKEwjxvp2yvKzWAhUJPRoKHRfNAo8QFggvMAE&url=https%3A%2F%2Fwww.berlin.de%2Fpolizei%2F_assets%2Faufgaben%2Fanlagen-verkehrssicherheit%2Fradfahrer2016.pdf&usg=AFQjCNE-mfKoO9Qf1vKRtQFonXWZdHZYFA)
+
+
+[ARKit + CoreLocation](https://github.com/ProjectDent/ARKit-CoreLocation)
+
+
+[Statistics to Bike Accidents Berlin 2017](https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0ahUKEwjxvp2yvKzWAhUJPRoKHRfNAo8QFggvMAE&url=https%3A%2F%2Fwww.berlin.de%2Fpolizei%2F_assets%2Faufgaben%2Fanlagen-verkehrssicherheit%2Fradfahrer2016.pdf&usg=AFQjCNE-mfKoO9Qf1vKRtQFonXWZdHZYFA)
 
 
 
