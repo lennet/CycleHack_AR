@@ -13,15 +13,15 @@ struct DataOverYearModel: Codable {
     var directorate: Int
     var lat: Double
     var lng: Double
-    var count_2008: Int
-    var count_2009: Int
-    var count_2010: Int
-    var count_2011: Int
-    var count_2012: Int
-    var count_2013: Int
-    var count_2014: Int
-    var count_2015: Int
-    var count_2016: Int
+    var y2008: Int
+    var y2009: Int
+    var y2010: Int
+    var y2011: Int
+    var y2012: Int
+    var y2013: Int
+    var y2014: Int
+    var y2015: Int
+    var y2016: Int
 }
 
 extension DataOverYearModel {
