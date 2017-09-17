@@ -94,7 +94,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     func configureSceneView() {
         sceneLocationView.frame = view.frame
         sceneLocationView.autoresizingMask = UIViewAutoresizing.flexibleWidth.union(.flexibleHeight)
-        sceneLocationView.showAxesNode = true
+        sceneLocationView.showAxesNode = false
         sceneLocationView.locationViewDelegate = self
         view.insertSubview(sceneLocationView, at: 0)
     }
@@ -193,7 +193,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         
         // 🙈🚨 TODO: create new data instead of filtering every time
         guard let yearData = yearData.filter({
-            return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate && $0.y2016 == pointFeature.properties.count
+            return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate &&  $0.y2016 == pointFeature.properties.count
         }).first else {
            return
         }
