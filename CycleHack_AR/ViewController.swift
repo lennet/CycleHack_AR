@@ -188,7 +188,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
         
-        //locationNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
         let constraint = SCNLookAtConstraint(target: sceneLocationView.pointOfView)
         constraint.isGimbalLockEnabled = true
         locationNode.constraints = [constraint]
