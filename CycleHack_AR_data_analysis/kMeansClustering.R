@@ -96,6 +96,7 @@ accidentCluster
 ## with data from all years
 accidentCluster_allYears <- kmeans(acciMisMean, 4, nstart = 30)
 accidentCluster_allYears
+silhouette(accidentCluster_allYears$cluster, dist = dist())
 
 ##### Model evaluation ####
 # table(acciTrain$directorate, accidentCluster$cluster)
@@ -113,4 +114,4 @@ ggplot(acciMisMean, aes(lat, lng, color = accidentCluster_allYears$cluster)) +
         color = "Cluster"
     ) +
     theme_minimal()
-silhouette(accidentCluster_allYears)
+
