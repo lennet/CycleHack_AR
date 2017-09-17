@@ -76,11 +76,14 @@ acciMisMean <- acciPoints %>%
 # estimating the right number of clusters
 # y<-as.matrix(sapply(x, as.numeric))
 
-gap <- clusGap(acciMisMean, FUN = kmeans, K.max = 2, B = 10)
-with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
+## cannot execute that test because of not sufficient memory on my laptop (4gb)
+# gap <- clusGap(acciMisMean, FUN = kmeans, K.max = 2, B = 10)
+# with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
+
 
 
 #### model training ####
+## for 2016 data
 acciTrain <- acciPoints2016 %>%
     select(
         -street,
@@ -90,8 +93,12 @@ str(acciTrain)
 accidentCluster <- kmeans(acciTrain, 5, nstart = 10)
 accidentCluster
 
+## with data from all years
+accidentCluster_allYears <- kmeans(acciMisMean, 5, nstart = 20)
+accidentCluster_allYears
+
 ##### Model evaluation ####
 # table(acciTrain$directorate, accidentCluster$cluster)
-accidentCluster$cluster <- as.factor(accidentCluster$cluster)
-ggplot(acciTrain, aes(lat, lng, color = accidentCluster$cluster)) + geom_point()
+accidentCluster_allYears$cluster <- as.factor(accidentCluster_allYears$cluster)
+ggplot(acciMisMean, aes(lat, lng, color = accidentCluster_allYears$cluster)) + geom_point()
 
