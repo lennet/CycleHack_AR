@@ -45,6 +45,9 @@ temp <- acciPoints %>%
         count
     )
 temp1 <- reshape(temp, idvar = c("street", "directorate"), timevar = "year", sep = "_", direction = "wide")
+
+temp1[is.na(temp1)] <- 0
+
 colnames(temp1) <- c("street", "directorate", 
                      "y2008", 
                      "y2009",
