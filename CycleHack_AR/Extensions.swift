@@ -19,33 +19,24 @@ func ==<Element : Equatable> (lhs: [[[Element]]], rhs: [[[Element]]]) -> Bool {
 
 extension SCNNode {
     
-    public class func graphNode(with values:[Float],for color: UIColor) -> SCNNode {
+    public class func graphNode(with values:[Float],for colors: [UIColor]) -> SCNNode {
         let size = CGSize(width: 60, height: 60)
         let maxValue = values.max() ?? 0
-        var points: [CGPoint] = values.enumerated().map
-        {
-            (index, element) in
+        let node = SCNNode()
+        values.enumerated().forEach{ (index, value) in
+            let box = SCNBox(width: size.width/CGFloat(values.count), height: size.height * CGFloat(value/maxValue), length: 5, chamferRadius: 0)
             
-            let y = (CGFloat(element) / CGFloat(maxValue) * size.height)
-            let x = CGFloat(index) / CGFloat(values.count) * size.width
+            let material = SCNMaterial()
+            material.diffuse.contents = colors[index]
+            box.materials = [material]
             
-            // plus 0.01 avoids holes caused by zero values
-            return CGPoint(x: x, y: y+0.01)
+            
+            let boxNode = SCNNode(geometry: box)
+            boxNode.position.x += Float((size.width/CGFloat(values.count)) * CGFloat(index)) + Float(size.width)/10
+            boxNode.position.y += Float(size.height * CGFloat(value/maxValue))/2
+            node.addChildNode(boxNode)
         }
-        
-        points.append(CGPoint(x: size.width, y: 0))
-        points.insert(CGPoint(x: 0, y: 0), at: 0)
-        
-        let path = UIBezierPath(points: points, interpolation: .linear)
-        
-        path.close()
-        let shape = SCNShape(path: path, extrusionDepth: 5)
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = color.withAlphaComponent(0.8)
-        shape.materials = [material]
-        
-        let node = SCNNode(geometry: shape)
+
         return node
     }
     
