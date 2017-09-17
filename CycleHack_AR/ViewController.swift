@@ -38,9 +38,7 @@ extension LocationAnnotationNode {
 extension LocationNode {
     
     convenience init(streetFeature: GeoFeature<Point, [Double]>, radius: CGFloat){
-        let sphere = SCNSphere(radius: radius)
         self.init(location: streetFeature.location)
-        geometry = sphere
     }
     
 }
@@ -183,22 +181,27 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         locationNode.addChildNode(textNode)
         
         defer {
+//            let camera = sceneLocationView.pointOfView!
+//            let position = SCNVector3(x: 0, y: -1, z: 0)
+//            locationNode.position = camera.convertPosition(position, to: nil)
+//            locationNode.rotation = camera.rotation
+            
+            
             locationNode.scale = SCNVector3Make(0.5, 0.5, 0.5)
             currentNodes.insert(locationNode)
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
-        
-
+    
         
         // 🙈🚨 TODO: create new data instead of filtering every time
         guard let yearData = yearData.filter({
-            return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate
+            return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate && $0.y2016 == pointFeature.properties.count
         }).first else {
            return
         }
         
         
-        let yearCounts = [yearData.count_2008,yearData.count_2009,yearData.count_2010,yearData.count_2011,yearData.count_2012,yearData.count_2013, yearData.count_2014, yearData.count_2015, yearData.count_2016].map{Float($0)}
+        let yearCounts: [Float] = [yearData.y2008,yearData.y2009,yearData.y2010,yearData.y2011,yearData.y2012,yearData.y2013, yearData.y2014, yearData.y2015, yearData.y2016].map{Float($0)}
         let graphNode = SCNNode.graphNode(with: yearCounts, for: [#colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1),#colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1),#colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1),#colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1),#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1),#colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1),#colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1),#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)])
         graphNode.position.y -= 1
         graphNode.position.x -= graphNode.boundingBox.max.x * 1.5
@@ -221,11 +224,7 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
         maxValueNode.position.x -= maxValueNode.boundingBox.max.x
         graphNode.addChildNode(maxValueNode)
         
-        let camera = sceneLocationView.pointOfView!
-        let position = SCNVector3(x: 0, y: -1, z: 0)
-        locationNode.position = camera.convertPosition(position, to: nil)
-        locationNode.rotation = camera.rotation
-        
+
         locationNode.addChildNode(graphNode)
     }
     
@@ -234,7 +233,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
             let polyNode = PolylineNode(polyline: polyline, altitude: 40)
             self.sceneLocationView.add(polyNode: polyNode)
-
         }
     }
     
@@ -290,11 +288,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         return nil
-    }
-    
-    @objc func updateLocation() {
-        //        print("updateLocation called")
-        //        print("Current number of locationNodes:  \(self.sceneLocationView)")
     }
     
     // MARK: SceneLocatioNViewDelegate

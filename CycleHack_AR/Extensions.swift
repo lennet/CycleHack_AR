@@ -20,7 +20,7 @@ func ==<Element : Equatable> (lhs: [[[Element]]], rhs: [[[Element]]]) -> Bool {
 extension SCNNode {
     
     public class func graphNode(with values:[Float],for colors: [UIColor]) -> SCNNode {
-        let size = CGSize(width: 60, height: 60)
+        let size = CGSize(width: 75, height: 75)
         let maxValue = values.max() ?? 0
         let node = SCNNode()
         values.enumerated().forEach{ (index, value) in
@@ -29,7 +29,6 @@ extension SCNNode {
             let material = SCNMaterial()
             material.diffuse.contents = colors[index]
             box.materials = [material]
-            
             
             let boxNode = SCNNode(geometry: box)
             boxNode.position.x += Float((size.width/CGFloat(values.count)) * CGFloat(index)) + Float(size.width)/10

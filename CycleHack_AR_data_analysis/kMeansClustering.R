@@ -4,7 +4,7 @@ require("fpc")
 
 set.seed(42)
 
-## data exploration
+#### data exploration ####
 summary(acciPoints)
 # missing values exist in oneway_ratio, feature_length and ride_length
 
@@ -45,15 +45,14 @@ table(is.na(acciPoints$feature_length))
 
 median(acciPoints$lng[is.na(acciPoints$ride_length) == TRUE])
 
+#### Data preprocessing ####
 # imputing missing values with means
 # in oneway_ratio, feature_length and ride_length
 acciMisMean <- acciPoints %>%
     select(
         -street,
+        -year,
         -features
-    ) %>%
-    filter(
-        year == 2016
     ) %>%
     mutate(
         oneway_ratio = ifelse(
@@ -77,7 +76,7 @@ acciMisMean <- acciPoints %>%
 # estimating the right number of clusters
 # y<-as.matrix(sapply(x, as.numeric))
 
-gap <- clusGap(acciMisMean, FUN = kmeans, K.max = 2, B = 50)
+gap <- clusGap(acciMisMean, FUN = kmeans, K.max = 2, B = 10)
 with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
 
 
