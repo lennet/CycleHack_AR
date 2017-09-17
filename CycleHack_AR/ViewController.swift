@@ -38,9 +38,7 @@ extension LocationAnnotationNode {
 extension LocationNode {
     
     convenience init(streetFeature: GeoFeature<Point, [Double]>, radius: CGFloat){
-        let sphere = SCNSphere(radius: radius)
         self.init(location: streetFeature.location)
-        geometry = sphere
     }
     
 }
@@ -50,7 +48,7 @@ class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
-    var distanceLimit: Double = 20
+    var distanceLimit: Double = 200
     let sceneLocationView = SceneLocationView()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -226,7 +224,6 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
             let polyNode = PolylineNode(polyline: polyline, altitude: 40)
             self.sceneLocationView.add(polyNode: polyNode)
-
         }
     }
     
