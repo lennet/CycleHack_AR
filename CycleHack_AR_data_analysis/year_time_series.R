@@ -8,12 +8,10 @@ require("dummies")
 # selecting data for year comparison
 temp <- acciPoints
     
-# rearranging the table to have count per year per street-directorate combo
-# md <- reshape::melt(temp, id = c("street", "directorate", "year"))
-# ct <- reshape::cast(md, street + directorate ~ variable + year)
-
+# one-hot-encoding the year to have the years as seprate columns
 temp <- dummy.data.frame(temp, names = c("year"), sep="_")
 
+# assigining the count to each year
 temp <- temp %>%
     mutate(
         y2008 = if_else(year_2008 == 1, count, as.integer(0)),
