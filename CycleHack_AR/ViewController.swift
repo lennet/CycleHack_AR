@@ -50,7 +50,7 @@ class ViewController: UIViewController,
 MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
     
     
-    var distanceLimit: Double = 20
+    var distanceLimit: Double = 200
     let sceneLocationView = SceneLocationView()
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -187,6 +187,14 @@ MKMapViewDelegate, SceneLocationViewDelegate, CLLocationManagerDelegate{
             currentNodes.insert(locationNode)
             sceneLocationView.addLocationNodeWithConfirmedLocation(locationNode: locationNode)
         }
+        
+        //locationNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+        let constraint = SCNLookAtConstraint(target: sceneLocationView.pointOfView)
+        constraint.isGimbalLockEnabled = true
+        locationNode.constraints = [constraint]
+        
+
+        
         // 🙈🚨 TODO: create new data instead of filtering every time
         guard let yearData = yearData.filter({
             return $0.street == pointFeature.properties.name && "\($0.directorate)" == pointFeature.properties.directorate
